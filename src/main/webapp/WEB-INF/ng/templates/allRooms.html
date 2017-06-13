@@ -1,0 +1,150 @@
+
+<div class="container">
+<div class="well">
+  <div data-ng-show="aData.message" class="alert alert-danger">
+    {{aData.message}}
+  </div>
+<h1>Create Room</h1>
+<form data-ng-submit="aData.createRoom()">
+  <div class="form-group"> <!-- Name field -->
+    <input class="form-control" type="text" placeholder="Name" data-ng-model="aData.newRoom.name"/>
+  </div>
+	
+  <div class="form-group"> <!-- Description field -->
+    <textarea class="form-control" placeholder="Description" data-ng-model="aData.newRoom.description"></textarea>
+  </div>
+	
+  <div class="form-group"> <!-- Submit button -->
+    <button class="btn btn-primary" type="submit">Create</button>
+  </div>	
+
+</form>
+</div>
+</div>
+
+<div class="row">
+<div class="col-xs-4">
+  <div class="well">
+    <div class="noticeMeText" style="text-align: center;">
+      Filter
+      <button data-ng-click="aData.removeFilter()" class="btn btn-danger btn-xs" type="button">
+        clear
+      </button>
+    </div>
+    <form data-ng-submit="aData.addRoomNameToFilter()">
+      <input data-ng-model="aData.newRoomNameToFilter" type="text" class="form-control" placeholder="Room Name" required uib-typeahead="room.name for room in aData.getRoomsWithRoomNameLike($viewValue) | limitTo:5" typeahead-loading="loadingRoomNames" typeahead-no-results="noRoomNameResults" typeahead-focus-first="false"/>
+      <i ng-show="loadingRoomNames" class="glyphicon glyphicon-refresh"></i>
+      <div ng-show="noRoomNameResults">
+        <i class="glyphicon glyphicon-remove"></i> No Results Found
+      </div>
+    </form>
+    <form data-ng-submit="aData.addOwnerToFilter()">
+      <input data-ng-model="aData.newOwnerToFilter" type="text" class="form-control" placeholder="Owner" required uib-typeahead="user.username for user in aData.getUsersWithUsernameLike($viewValue) | limitTo:5" typeahead-loading="loadingUsernames" typeahead-no-results="noUsernameResults" typeahead-focus-first="false" typeahead-template-url="ng/templates/typeahead/users.html"/>
+      <i ng-show="loadingUsernames" class="glyphicon glyphicon-refresh"></i>
+      <div ng-show="noUsernameResults">
+        <i class="glyphicon glyphicon-remove"></i> No Results Found
+      </div>
+    </form>
+    <form data-ng-submit="aData.addAfterDateToFilter()">
+      <div class="input-group">
+        <input type="text" class="form-control" uib-datepicker-popup ng-model="aData.newAfterDateToFilter" is-open="newAfterDateToFilter.open" placeholder="Created After"/>
+        <span class="input-group-btn">
+          <button type="button" class="btn btn-default" ng-click="newAfterDateToFilter.open = !newAfterDateToFilter.open"><i class="glyphicon glyphicon-calendar"></i></button>
+        </span>
+      </div>
+    </form>
+    <form data-ng-submit="aData.addBeforeDateToFilter()">
+      <div class="input-group">
+        <input type="text" class="form-control" uib-datepicker-popup ng-model="aData.newBeforeDateToFilter" is-open="newBeforeDateToFilter.open" placeholder="Created Before"/>
+        <span class="input-group-btn">
+          <button type="button" class="btn btn-default" ng-click="newBeforeDateToFilter.open = !newBeforeDateToFilter.open"><i class="glyphicon glyphicon-calendar"></i></button>
+        </span>
+      </div>
+    </form>
+    <form data-ng-submit="aData.addCategoryToFilter()">
+      <input data-ng-model="aData.newCategoryToFilter" type="text" class="form-control" placeholder="Add Category" required uib-typeahead="cat.categoryName for cat in aData.getCategoriesWithNameLike($viewValue) | limitTo:5" typeahead-loading="loadingCategories" typeahead-no-results="noCategoryResults" typeahead-focus-first="false"/>
+      <i ng-show="loadingCategories" class="glyphicon glyphicon-refresh"></i>
+      <div ng-show="noCategoryResults">
+        <i class="glyphicon glyphicon-remove"></i> No Results Found
+      </div>
+    </form>
+    <div class="checkbox">
+      <label>
+        <input type="checkbox" data-ng-model="aData.roomFilter.hideClosedRooms" data-ng-change="aData.loadMoreRooms(true);"/>
+        Hide closed rooms
+      </label>
+	</div>
+    
+    <hr class="awesomeHr hrSmMargin"/>
+    
+    <div data-ng-show="aData.roomFilter.roomName" class="limitedText limitedTextBtnSm spaceBelow">
+      <div class="noticeMeTextSm centered">
+        Room Name
+        <button data-ng-click="aData.removeRoomNameFromFilter()" class="btn btn-danger btn-xs" type="button">
+          <span class="glyphicon glyphicon-remove"></span>
+        </button>
+      </div>
+      {{aData.roomFilter.roomName}}
+    </div>
+    <div data-ng-show="aData.roomFilter.ownerUsername" class="limitedText limitedTextBtnSm spaceBelow">
+      <div class="noticeMeTextSm centered">
+        Owner
+		<button data-ng-click="aData.removeOwnerFromFilter()" class="btn btn-danger btn-xs" type="button">
+          <span class="glyphicon glyphicon-remove"></span>
+        </button>
+      </div>
+      {{aData.roomFilter.ownerUsername}}
+    </div>
+    <div data-ng-show="aData.roomFilter.after" class="spaceBelow">
+      <div class="noticeMeTextSm centered">
+        Created After
+		<button data-ng-click="aData.removeAfterDateFromFilter()" class="btn btn-danger btn-xs" type="button">
+          <span class="glyphicon glyphicon-remove"></span>
+        </button>
+      </div>
+      {{aData.roomFilter.after | date}}
+    </div>
+    <div data-ng-show="aData.roomFilter.before" class="spaceBelow">
+      <div class="noticeMeTextSm centered">
+        Created Before
+		<button data-ng-click="aData.removeBeforeDateFromFilter()" class="btn btn-danger btn-xs" type="button">
+          <span class="glyphicon glyphicon-remove"></span>
+        </button>
+      </div>
+      {{aData.roomFilter.before | date}}
+    </div>
+    <div data-ng-show="aData.roomFilter.categories.length > 0">
+      <div class="noticeMeTextSm centered">
+        Categories
+		<button data-ng-click="aData.removeAllCategoriesFromFilter()" class="btn btn-danger btn-xs" type="button">
+          <span class="glyphicon glyphicon-remove"></span>
+        </button>
+      </div>
+    </div>
+    <div data-ng-repeat="cat in aData.roomFilter.categories" style="display: inline;">
+      <div class="btn-group" style="margin-top: 5px;">
+        <div class="btn btn-primary btn-xs limitedText limitedTextBtnSm">
+          {{cat}}
+        </div>
+        <div data-ng-click="aData.removeCategoryFromFilter(cat)" class="btn btn-danger btn-xs">
+          <span class="glyphicon glyphicon-remove"></span>
+        </div>
+      </div>        
+    </div>
+    
+  </div>
+</div>
+<div class="col-xs-8">
+  <forum-view-room-list room-list="aData.currentRooms"
+  						last-page-accessed="aData.lastRoomPage"
+  						ready-for-more-rooms="aData.readyForMoreRooms"
+  						auth-user="aData.authUser"
+						load-more-rooms="aData.loadMoreRooms()"
+  						view-room="aData.viewRoom(roomName)"
+  						close-room="aData.closeRoom(room)"
+  						reopen-room="aData.reopenRoom(room)"
+  						>
+  </forum-view-room-list>
+
+</div>
+</div>

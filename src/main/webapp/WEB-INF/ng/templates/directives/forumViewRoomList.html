@@ -1,0 +1,84 @@
+
+<div class="forumViewRoomList">
+  <div data-ng-repeat="room in roomList" data-ng-click="viewRoom({roomName:room.name})" class="well clickable forumViewRoom" uib-popover-template="'ng/templates/popovers/roomDescription.html'" popover-trigger="mouseenter">
+    <div class="noticeMeText" style="text-align: center; font-size: 1.6em;">
+      {{room.name}}
+    </div>
+    <hr class="awesomeHr"/>
+    
+    <div>
+    <div class="row forumViewRoomDescLine">
+      <div class="col-xs-4 noticeMeTextSm">
+        Owner
+      </div>
+      <div class="col-xs-8 limitedText">
+        <img gravatar-src="room.owner.email" gravatar-size="25" class="img-circle img-responsive" style="display: inline;">
+	    <span class="">
+		  {{room.owner.username}}
+	    </span>
+      </div>
+    </div>
+
+    <!-- 
+    <div class="row forumViewRoomDescLine">
+      <div class="col-xs-4 noticeMeTextSm">
+        Created
+      </div>
+      <div class="col-xs-8">
+        {{room.created | date}}
+      </div>
+    </div>
+    <div class="row forumViewRoomDescLine">
+      <div class="col-xs-4 noticeMeTextSm">
+		Closed
+      </div>
+      <div class="col-xs-8">
+		{{(room.closed | date) || "OPEN"}}
+		<div class="label label-danger clickable" data-ng-if="authUser.name == room.owner.username && !room.closed" data-ng-click="closeRoom({room:room});$event.stopPropagation();" uib-popover-template="'ng/templates/popovers/clickToCloseRoom.html'" popover-trigger="mouseenter">
+		  Close
+		</div>
+        <div class="label label-success clickable" data-ng-if="authUser.name == room.owner.username && room.closed" data-ng-click="reopenRoom({room:room});$event.stopPropagation();" uib-popover-template="'ng/templates/popovers/clickToReopenRoom.html'" popover-trigger="mouseenter">
+          Reopen
+        </div>
+      </div>
+    </div>
+     -->
+    </div>
+  </div> <!-- end ngRepeat -->
+  
+
+
+<!-- Load more rooms on scroll -->
+<div data-ng-hide="lastPageAccessed.last">
+  <data-scroll-callback scroll-threshold="0" cb="loadMoreRooms()" ready-for-more="readyForMoreRooms"></data-scroll-callback>
+</div>
+
+</div> <!-- end div with class forumViewRoomList -->
+<!-- <table class="table table-responsive table-hover"> -->
+<!--   <thead> -->
+<!--     <tr> -->
+<!--       <th>Name</th> -->
+<!--       <th>Description</th> -->
+<!--       <th>Owner</th> -->
+<!--       <th>Created</th> -->
+<!--       <th>Closed</th> -->
+<!--     </tr> -->
+<!--   </thead> -->
+<!--   <tbody data-ng-repeat="room in roomList"> -->
+<!--     <tr data-ng-click="viewRoom({roomName:room.name})" class="clickable"> -->
+<!--       <td>{{room.name}}</td> -->
+<!--       <td>{{room.description}}</td> -->
+<!--       <td>{{room.owner.username}}</td> -->
+<!--       <td>{{room.created | date}}</td> -->
+<!--       <td> -->
+<!--         {{(room.closed | date) || "OPEN"}} -->
+<!-- 		<div class="label label-danger clickable" data-ng-if="authUser.name == room.owner.username && !room.closed" data-ng-click="closeRoom({roomName:room.name});$event.stopPropagation();" uib-popover-template="'ng/templates/popovers/clickToCloseRoom.html'" popover-trigger="mouseenter"> -->
+<!-- 		  Close -->
+<!-- 		</div> -->
+<!--         <div class="label label-success clickable" data-ng-if="authUser.name == room.owner.username && room.closed" data-ng-click="reopenRoom({roomName:room.name});$event.stopPropagation();" uib-popover-template="'ng/templates/popovers/clickToReopenRoom.html'" popover-trigger="mouseenter"> -->
+<!--           Reopen -->
+<!--         </div> -->
+<!--       </td> -->
+<!--     </tr> -->
+<!--   </tbody> -->
+<!-- </table> -->

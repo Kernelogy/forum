@@ -1,0 +1,118 @@
+<div class="forumRoom">
+
+  <div data-ng-if="username == room.owner.username" class="page-header">
+  
+    <div  style="font-size: 30px;">
+      <div data-ng-show="readyToUpdateRoomName">
+        <form data-ng-submit="updateRoomName({room:room, newName:newName});readyToUpdateRoomName=false;">
+		  <div class="input-group">
+			<input type="text" class="form-control" data-ng-model="newName" placeholder="New Name"/>
+			<span class="input-group-btn" style="width:0;">
+			  <button data-ng-click="updateRoomName({room:room, newName:newName});readyToUpdateRoomName=false;" class="btn btn-success" type="button">Update</button>
+			  <button data-ng-click="readyToUpdateRoomName = false; newName = room.name;" class="btn btn-danger" type="button">Cancel</button>
+			</span>
+		  </div>
+        </form>
+      </div>
+      <span data-ng-click="readyToUpdateRoomName = true; newName = room.name;" data-ng-hide="readyToUpdateRoomName" class="clickable">
+        {{room.name}}
+      </span>
+    </div>
+    
+	  <div data-ng-show="readyToUpdateRoomDescription">
+        <form data-ng-submit="updateRoomDescription({room:room, newDescription:newDescription});readyToUpdateRoomDescription=false;">
+  		  <div class="form-group"> <!-- Description field -->
+    	    <textarea class="form-control" placeholder="New Description" data-ng-model="newDescription"></textarea>
+  	 	  </div>
+		  <div class="btn-group">
+		    <button data-ng-click="updateRoomDescription({room:room, newDescription:newDescription});readyToUpdateRoomDescription=false;" class="btn btn-success" type="button">Update</button>
+		    <button data-ng-click="readyToUpdateRoomDescription = false; newDescription = room.description;" class="btn btn-danger" type="button">Cancel</button>
+		  </div>
+        </form>
+      </div>
+    
+    <span data-ng-click="readyToUpdateRoomDescription = true; newDescription = room.description;" data-ng-hide="readyToUpdateRoomDescription" class="clickable" style="font-style: italic;">
+      {{room.description}}
+    </span>  
+  </div>
+  
+  <div data-ng-if="username != room.owner.username" class="page-header">
+    <div style="font-size: 30px;">
+      <span>
+        {{room.name}}
+      </span>
+    </div>
+    
+    <span style="font-style: italic;">
+      {{room.description}}
+    </span>    
+  </div>
+  
+  <div class="row">
+    <div class="col-xs-4">
+      <span class="label label-info">Owner</span>
+    </div>
+    <div class="col-xs-8 limitedText">
+      <img gravatar-src="room.owner.email" gravatar-size="25" class="img-circle img-responsive" style="display: inline;">
+      <span class="noticeMeText">
+        {{room.owner.username}}
+      </span>      
+    </div>
+  </div>
+  <hr class="awesomeHr"/>
+  <div class="row">
+    <div class="col-xs-4">
+      <span class="label label-info">Created</span>
+    </div>
+    <div class="col-xs-8">
+      {{room.created | date}}
+    </div>
+  </div>
+  <hr class="awesomeHr"/>
+  <div class="row" data-ng-show="room.closed">
+    <div class="col-xs-4">
+      <span class="label label-info">Closed</span>
+    </div>
+    <div class="col-xs-8">
+      {{room.closed | date}}
+      <div class="label label-success clickable" data-ng-if="username == room.owner.username && room.closed" data-ng-click="reopenfn({roomName:room.name})" uib-popover-template="'ng/templates/popovers/clickToReopenRoom.html'" popover-trigger="mouseenter">
+        Reopen
+      </div>
+    </div>
+  </div>
+  <hr class="awesomeHr" data-ng-show="room.closed"/>
+  <div class="row">
+    <div class="col-xs-4">
+      <span class="label label-info">Status</span>
+    </div>
+    <div class="col-xs-8">
+      {{room.closed ? 'CLOSED' : 'OPEN'}}
+      <div class="label label-danger clickable" data-ng-if="username == room.owner.username && !room.closed" data-ng-click="closefn({roomName:room.name})" uib-popover-template="'ng/templates/popovers/clickToCloseRoom.html'" popover-trigger="mouseenter">
+        Close
+      </div>
+    </div>
+  </div>
+  <hr class="awesomeHr"/>
+  <div class="row" data-ng-if="username == room.owner.username">
+    <div class="col-xs-12">
+      <form data-ng-submit="addCategoryToRoom({room:room, category:newCategory});">
+        <input data-ng-model="newCategory" class="form-control" placeholder="Add category"/>
+      </form>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <div data-ng-repeat="cat in room.roomCategory" style="display: inline;">
+        <div class="btn-group" style="margin-top: 5px;">
+          <div class="btn btn-primary btn-xs" data-ng-click="findOtherRoomsWithCategory({categoryName:cat.category.categoryName})">
+            {{cat.category.categoryName}}
+          </div>
+          <div data-ng-click="removeCategoryFromRoom({room:room, category:cat});" data-ng-if="username == room.owner.username" class="btn btn-danger btn-xs">
+            <span class="glyphicon glyphicon-remove"></span>
+          </div>
+        </div>        
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,46 @@
+<div class="row">
+  
+  <div class="col-xs-12 col-md-6">
+    <div class="well">
+      <data-forum-room 	room="rData.currentRoom" 
+      					username="rData.authUser.name" 
+      					update-room-name="rData.updateRoomName(room, newName)"
+      					update-room-description="rData.updateRoomDescription(room, newDescription)"
+      					closefn="rData.closeRoom(roomName)"
+      					reopenfn="rData.reopenRoom(roomName)"
+      					add-category-to-room='rData.addCategoryToRoom(room, category)'
+						remove-category-from-room='rData.removeCategoryFromRoom(room, category)'
+						find-other-rooms-with-category='rData.findOtherRoomsWithCategory(categoryName)'
+      					/>
+    </div>
+  </div>
+
+  <div class="col-xs-12 col-md-6">
+    <div class="well" data-ng-hide="rData.currentRoom.closed">
+      <form data-ng-submit="rData.postMessage()">
+	    <div class="form-group">
+	      <div text-angular ta-toolbar="[['h1','h2','h3','p','pre','quote','bold','italics','underline','ul','ol','justifyLeft','justifyCenter','justifyRight'],['undo','redo','clear','wordcount','charcount']]" data-ng-model="rData.newMessage" placeholder="Enter Message..."></div>
+	  
+<!-- 	  text angular defaults -->
+<!-- 	  <div text-angular ng-model="htmlVariable" ta-toolbar-class="btn-toolbar" ta-toolbar-group-class="btn-group" ta-toolbar-button-class="btn btn-default" ta-toolbar-active-button-class="active"></div> -->
+	    </div>
+	    <div class="form-group"> <!-- Post Message button -->
+		  <button class="btn btn-primary" type="submit">Post Message</button>
+	    </div>	
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="well">
+  <data-forum-message-list	messages='rData.currentMessages'
+  						username="rData.authUser.name"
+						last-page-accessed='rData.lastPageAccessed'
+						ready-for-more-posts='rData.readyForMorePosts'
+						like-message='rData.likeMessage(message, userLikesMessage)'
+						update-message='rData.updateMessage(msg, newMessage)'
+						delete-message='rData.deleteMessage(msg)'
+						load-more-messages='rData.loadMoreMessages()'						
+					>
+  </data-forum-message-list>
+</div>

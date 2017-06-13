@@ -1,0 +1,62 @@
+  <!-- display info about message -->
+  <div class="row">
+  
+	<div class="col-xs-2">
+	  <div data-ng-hide="msg.authUserMessage.userLikesMessage" data-ng-click="likeMessage({msg:msg, userLikesMessage:true})" class="likeBtn clickable" uib-popover-template="'ng/templates/popovers/clickToLike.html'" popover-trigger="mouseenter">
+	    <span class="label label-primary">Like</span>
+	  </div>
+	  <div data-ng-show="msg.authUserMessage.userLikesMessage" data-ng-click="likeMessage({message:msg, userLikesMessage:false})" class="likeBtn clickable" uib-popover-template="'ng/templates/popovers/clickToUnlike.html'" popover-trigger="mouseenter">
+		<div class="label label-success">
+		  <span class="glyphicon glyphicon-heart"></span>
+		</div>
+	  </div>
+	  <span class="badge" uib-popover-template="'ng/templates/popovers/likesList.html'" popover-trigger="mouseenter">{{msg.numLikes}}</span>
+	</div>
+
+	<div class="col-xs-4 limitedText">
+	  <img gravatar-src="msg.owner.email" gravatar-size="25" class="img-circle img-responsive" style="display: inline;">
+	  <span class="noticeMeText">
+		{{msg.owner.username}}
+	  </span>
+	</div>
+
+	<div class="col-xs-4">
+	  <span class="pull-right">
+		{{msg.created | date : "short"}}
+	  </span>
+	</div>
+
+	<div class="col-xs-2" data-ng-show="username == msg.owner.username">
+	  <div class="pull-right">
+	    <div data-ng-hide="readyToUpdateMessage || readyToDeleteMessage">
+		  <button data-ng-click="readyToUpdateMessage = true; newMessage = msg.message;" class="btn btn-xs btn-primary" type="button">Edit</button>
+		  <button data-ng-click="readyToDeleteMessage = true;" class="btn btn-xs btn-danger" type="button">Delete</button>
+		</div>
+		<div data-ng-show="readyToUpdateMessage">
+		  <button data-ng-click="updateMessage({msg:msg, newMessage:newMessage});readyToUpdateMessage = false;" class="btn btn-xs btn-success" type="button">Update</button>
+		  <button data-ng-click="readyToUpdateMessage = false; newMessage = msg.message;" class="btn btn-xs btn-danger" type="button">Cancel</button>		  
+		</div>
+		<div data-ng-show="readyToDeleteMessage">
+		  <button data-ng-click="readyToDeleteMessage = false;" class="btn btn-xs btn-danger" type="button">Cancel</button>		  
+		</div>
+	  </div>	
+	</div>
+	  
+  </div> <!-- end row -->
+
+  <!-- display message -->
+  <div class="jumbotron">
+	<div class="row">
+	  <div class="col-xs-12">
+	    <div data-ng-hide="readyToUpdateMessage || readyToDeleteMessage">
+	      <span data-ng-bind-html="msg.message"></span>
+	    </div>
+	    <div data-ng-show="readyToUpdateMessage">
+	      <div text-angular ta-toolbar="[['h1','h2','h3','p','pre','quote','bold','italics','underline','ul','ol','justifyLeft','justifyCenter','justifyRight'],['undo','redo','clear','wordcount','charcount']]" data-ng-model="newMessage" placeholder="Enter Message..."></div>
+	    </div>
+	    <div data-ng-show="readyToDeleteMessage">
+	      Are you sure you want to delete this message? <button data-ng-click="deleteMessage({msg:msg})" class="btn btn-danger" type="button">Yes, delete this message.</button>
+	    </div>
+	  </div>
+	</div>
+  </div>
